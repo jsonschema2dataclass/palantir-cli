@@ -1,0 +1,7 @@
+[versions]
+# Version of Kotlin Gradle Plugin used for compilation.
+palantir-version = "2.30.0"
+
+[libraries]
+
+palantir = { module = "com.palantir.javaformat:palantir-java-format", version.ref = "palantir-version" }

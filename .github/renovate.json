@@ -1,0 +1,10 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "commitMessageExtra": "from {{{currentValue}}} to {{{newValue}}}{{#if isMajor}} (major v{{{newMajor}}}){{else}}{{/if}}",
+  "extends": [
+    "config:base"
+  ],
+  "separateMajorMinor": true,
+  "separateMinorPatch": true,
+  "separateMultipleMajor": true
+}

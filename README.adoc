@@ -1,0 +1,35 @@
+= Basic Palantir Java Format CLI
+:palantir_base: https://github.com/palantir/palantir-java-format
+:palantir: {palantir_base}[Palantir Java Format]
+:palantir_issues: {palantir_base}/issues[Palantir Java Format Issues]
+
+Basic {palantir} CLI app builder.
+
+This builder doesn't alter anything to the code.
+
+== License
+
+License is the same as the {palantir_base}[base project].
+
+== Versioning
+
+Version is always matches the {palantir_base}[base project].
+
+Give me a shout if any older versions are needed.
+
+== Java version required
+
+Java version required is the same as {palantir_base}[base project].
+This project is just a re-pack of the original project by creating fat jar.
+
+== Transitive dependency policy and security issues
+
+This project doesn't care about transitive dependencies.
+If any vulnerabilities has been found, please report to {palantir_issues}.
+
+== Testing
+
+Every jar is tested only if `java -jar <filename>.jar` won't fail (main class exists).
+
+If Palantir stopped work for you or parameters has been changed
+please report to {palantir_issues}.

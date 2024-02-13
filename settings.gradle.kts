@@ -1,0 +1,14 @@
+rootProject.name = "palantir-cli"
+
+@Suppress("UnstableApiUsage")
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+    }
+    versionCatalogs {
+        create("libs") {
+            from(files("gradle/libs.dependencies.toml"))
+        }
+    }
+}

@@ -1,0 +1,51 @@
+name: "Renovate Automerge"
+
+on:
+  pull_request_target:
+
+jobs:
+  wait_and_automerge:
+    runs-on: ubuntu-latest
+
+    if: github.actor == 'renovate[bot]'
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: 'Wait for status checks'
+        id: waitforstatuschecks
+        uses: WyriHaximus/github-action-wait-for-status@v1.8
+        with:
+          ignoreActions: worker,WIP
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Auto-merge
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+  changes:
+    needs: wait_and_automerge
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      palantir: ${{ steps.filter.outputs.palantir }}
+    steps:
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            palantir:
+            - gradle/libs.dependencies.toml
+
+  auto_release:
+    needs: changes
+    if: ${{ needs.changes.outputs.palantir == 'true' }}
+    permissions:
+      contents: write
+
+    uses: ./.github/workflows/release.yml
