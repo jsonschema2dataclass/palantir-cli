@@ -4,7 +4,7 @@ plugins {
 }
 // FYI: project group is not used anywhere.
 project.group = "org.github.eirnym.palantir"
-project.version = project.properties["projVersion"] ?: "1.0.0"
+project.version = project.libs.palantir.orNull?.version ?: "1.0.0"
 
 application {
     mainClass.set("com.palantir.javaformat.java.Main")
