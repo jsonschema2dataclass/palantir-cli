@@ -31,12 +31,13 @@ jobs:
           distribution: zulu
           java-version: 21
           cache: gradle
-      - run: |
-          echo $PALANTIR_VERSION
-          ./gradlew build -S --warning-mode all --no-daemon "-PprojVersion=${PALANTIR_VERSION}"
+      - name: Build palantir cli ${{ github.event.inputs.palantir_version }}
+        run: |
+          ./gradlew build -S --warning-mode all --no-daemon
         env:
           PALANTIR_VERSION: ${{ steps.setvars.outputs.palantir_version }}
-      - run: |
-          java -jar "build/libs/palantir-cli-${PALANTIR_VERSION}-standalone.jar"
+      - name: Test palantir cli ${{ github.event.inputs.palantir_version }}
+        run: |
+          java -jar build/libs/palantir-cli-*-standalone.jar
         env:
           PALANTIR_VERSION: ${{ steps.setvars.outputs.palantir_version }}
