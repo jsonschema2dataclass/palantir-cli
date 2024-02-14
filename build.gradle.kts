@@ -18,7 +18,10 @@ tasks {
         archiveClassifier.set("standalone") // Naming the jar
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         manifest {
-            attributes(mapOf("Main-Class" to application.mainClass))
+            attributes(mapOf(
+                "Main-Class" to application.mainClass,
+                "Implementation-Version" to project.libs.palantir.orNull?.version,
+            ))
         } // Provided we set it up in the application plugin configuration
         val sourcesMain = sourceSets.main.get()
         val contents = configurations.runtimeClasspath.get()
