@@ -22,7 +22,7 @@ jobs:
       - name: Set palantir version to ${{ github.event.inputs.palantir_version }}
         run: |
           echo -n ${{ github.event.inputs.palantir_version }} | grep -E '^[0-9]+[.][0-9]+[.][0-9]+$' > /dev/null
-          sed -i'' '/^palantir-version/s,".*",palantir-version = "'${{github.event.inputs.palantir_version}}'",' gradle/libs.dependencies.toml
+          sed -i'' '/^palantir-version/s,".*","'${{github.event.inputs.palantir_version}}'",' gradle/libs.dependencies.toml
           cat gradle/libs.dependencies.toml
       - name: Set variables
         id: setvars
