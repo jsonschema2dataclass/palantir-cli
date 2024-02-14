@@ -1,0 +1,55 @@
+---
+name: Release manual CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      palantir_version:
+        description: 'Palantir version CLI to publish'
+        type: string
+        required: true
+
+jobs:
+  release:
+    permissions:
+      contents: write
+
+    name: Release CLI
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set palantir version to ${{ github.event.inputs.palantir_version }}
+        run: |
+          sed -i'' '/^palantir-version/s,".*",palantir-version = "'"${{github.event.inputs.palantir_version}}"'",' gradle/libs.dependencies.toml
+      - name: Set variables
+        id: setvars
+        run: |
+          version=$(sed -n 's,palantir-version = "\(.*\)",\1,p' gradle/libs.dependencies.toml)
+          echo "palantir_version=$version" >> $GITHUB_OUTPUT
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 21
+          cache: gradle
+      - name: Build palantir cli ${{ github.event.inputs.palantir_version }}
+        run: |
+          ./gradlew build -S --warning-mode all --no-daemon "-PprojVersion=${PALANTIR_VERSION}"
+        env:
+          PALANTIR_VERSION: ${{ steps.setvars.outputs.palantir_version }}
+      - name: Test palantir cli ${{ github.event.inputs.palantir_version }}
+        run: |
+          java -jar "build/libs/palantir-cli-$PALANTIR_VERSION-standalone.jar"
+        env:
+          PALANTIR_VERSION: ${{ steps.setvars.outputs.palantir_version }}
+      - name: Release palantir cli ${{steps.setvars.outputs.palantir_version}}"
+        run: |
+          gh release create \
+            "$PALANTIR_VERSION" \
+            -t "Palantir CLI $PALANTIR_VERSION" \
+            --generate-notes \
+             "build/libs/palantir-cli-${PALANTIR_VERSION}-standalone.jar"
+        env:
+          PALANTIR_VERSION: ${{ steps.setvars.outputs.palantir_version }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
