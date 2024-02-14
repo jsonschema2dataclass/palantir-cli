@@ -1,6 +1,6 @@
 plugins {
     application
-    id("org.jetbrains.kotlin.jvm") version "1.9.22"
+    java
 }
 // FYI: project group is not used anywhere.
 project.group = "org.github.eirnym.palantir"
@@ -13,7 +13,7 @@ application {
 tasks {
     val fatJar = register<Jar>("fatJar") {
         dependsOn.addAll(
-            listOf("compileJava", "compileKotlin", "processResources"),
+            listOf("compileJava", "processResources"),
         ) // We need this for Gradle optimization to work
         archiveClassifier.set("standalone") // Naming the jar
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
