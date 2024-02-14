@@ -18,10 +18,21 @@ tasks {
         archiveClassifier.set("standalone") // Naming the jar
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         manifest {
-            attributes(mapOf(
-                "Main-Class" to application.mainClass,
-                "Implementation-Version" to project.libs.palantir.orNull?.version,
-            ))
+            attributes(
+                mapOf(
+                    "Main-Class" to application.mainClass,
+                    "Implementation-Version" to project.libs.palantir.orNull?.version,
+                    "Add-Exports" to arrayOf(
+                        "jdk.compiler/com.sun.tools.javac.file",
+                        "jdk.compiler/com.sun.tools.javac.main",
+                        "jdk.compiler/com.sun.tools.javac.parser",
+                        "jdk.compiler/com.sun.tools.javac.tree",
+                        "jdk.compiler/com.sun.tools.javac.util",
+                        "jdk.compiler/com.sun.tools.javac.code",
+                        "jdk.compiler/com.sun.tools.javac.api",
+                    ).joinToString(" "),
+                ),
+            )
         } // Provided we set it up in the application plugin configuration
         val sourcesMain = sourceSets.main.get()
         val contents = configurations.runtimeClasspath.get()
