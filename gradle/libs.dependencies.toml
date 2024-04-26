@@ -1,6 +1,6 @@
 [versions]
 # Version of Kotlin Gradle Plugin used for compilation.
-palantir-version = "2.43.0"
+palantir-version = "2.44.0"
 
 [libraries]
 
