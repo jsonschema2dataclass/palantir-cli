@@ -19,7 +19,7 @@ jobs:
     name: Release CLI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: |
           git fetch --all
           git reset --hard origin/main
